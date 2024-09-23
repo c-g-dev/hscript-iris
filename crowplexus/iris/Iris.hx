@@ -231,6 +231,14 @@ class Iris {
 			expr = parse();
 
 		Iris.instances.set(this.name, this);
+
+		if (this.config.exportVariable != null) {
+			interp.setCapturedVariable(this.config.exportVariable);
+			interp.execute(expr);
+			var ret = interp.capturedVariable;
+			interp.setCapturedVariable(null);
+			return ret.r;
+		}
 		return interp.execute(expr);
 	}
 

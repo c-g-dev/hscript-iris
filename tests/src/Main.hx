@@ -14,6 +14,7 @@ using StringTools;
 class Main {
 	static function main() {
 		mainTest();
+		testExport();
 		// mainBytes();
 		// testIndenticalNames();
 	}
@@ -52,6 +53,15 @@ class Main {
 
 		var result = myScript.call("non existent function");
 		trace(result);
+	}
+
+	static function testExport() {
+		var config = {
+			name: "MyScript",
+			exportVariable: "export"
+		}
+		var myScript: Iris = new Iris("var i = 10; var export = i;", config);
+		trace(myScript.execute());
 	}
 
 	/**

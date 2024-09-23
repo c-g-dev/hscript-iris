@@ -22,6 +22,7 @@
 
 package crowplexus.hscript;
 
+import haxe.display.Display.Package;
 import crowplexus.iris.Iris;
 import crowplexus.hscript.proxy.ProxyType;
 import haxe.PosInfos;
@@ -72,6 +73,10 @@ class Interp {
 	#end
 
 	public var showPosOnLog: Bool = true;
+
+	var variableToCapture: Null<String> = null;
+
+	public var capturedVariable: LocalVar;
 
 	public function new() {
 		#if haxe3
@@ -310,6 +315,10 @@ class Interp {
 		}
 	}
 
+	public function setCapturedVariable(variableToCapture: Null<String>) {
+		this.variableToCapture = variableToCapture;
+	}
+
 	public function execute(expr: Expr): Dynamic {
 		depth = 0;
 		#if haxe3
@@ -323,7 +332,8 @@ class Interp {
 
 	function exprReturn(e): Dynamic {
 		try {
-			return expr(e);
+			var re = expr(e);
+			return re;
 		} catch (e:Stop) {
 			switch (e) {
 				case SBreak:
@@ -351,6 +361,9 @@ class Interp {
 	}
 
 	function restore(old: Int) {
+		if (variableToCapture != null && locals.get(variableToCapture) != null) {
+			capturedVariable = locals.get(variableToCapture);
+		}
 		while (declared.length > old) {
 			var d = declared.pop();
 			locals.set(d.n, d.old);

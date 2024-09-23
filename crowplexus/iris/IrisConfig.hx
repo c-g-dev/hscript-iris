@@ -7,6 +7,7 @@ typedef RawIrisConfig = {
 	var ?autoRun: Bool;
 	var ?autoPreset: Bool;
 	var ?localBlocklist: Array<String>;
+	var ?exportVariable: String;
 };
 
 typedef AutoIrisConfig = OneOfTwo<IrisConfig, RawIrisConfig>;
@@ -15,6 +16,8 @@ class IrisConfig {
 	public var name: String = null;
 	public var autoRun: Bool = true;
 	public var autoPreset: Bool = true;
+	public var exportVariable: String;
+
 	@:unreflective public var localBlocklist: Array<String> = [];
 
 	/**
@@ -25,10 +28,11 @@ class IrisConfig {
 	 * @param autoPreset			Makes the script automatically set imports to itself upon creation.
 	 * @param localBlocklist	List of classes or enums that cannot be used within this particular script
 	**/
-	public function new(name: String, autoRun: Bool = true, autoPreset: Bool = true, ?localBlocklist: Array<String>) {
+	public function new(name: String, autoRun: Bool = true, autoPreset: Bool = true, ?localBlocklist: Array<String>, ?exportVariable: String) {
 		this.name = name;
 		this.autoRun = autoRun;
 		this.autoPreset = autoPreset;
+		this.exportVariable = exportVariable;
 		if (localBlocklist != null)
 			this.localBlocklist = localBlocklist;
 	}
@@ -37,6 +41,6 @@ class IrisConfig {
 		if (d != null && Std.isOfType(d, IrisConfig))
 			return d;
 		var d: RawIrisConfig = cast d;
-		return new IrisConfig(d.name, d.autoRun, d.autoPreset, d.localBlocklist);
+		return new IrisConfig(d.name, d.autoRun, d.autoPreset, d.localBlocklist, d.exportVariable);
 	}
 }
