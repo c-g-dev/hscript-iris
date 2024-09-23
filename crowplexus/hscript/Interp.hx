@@ -331,8 +331,7 @@ class Interp {
 
 	function exprReturn(e): Dynamic {
 		try {
-			var re = expr(e);
-			return re;
+			return expr(e);
 		} catch (e:Stop) {
 			switch (e) {
 				case SBreak:
