@@ -22,7 +22,6 @@
 
 package crowplexus.hscript;
 
-import haxe.display.Display.Package;
 import crowplexus.iris.Iris;
 import crowplexus.hscript.proxy.ProxyType;
 import haxe.PosInfos;
